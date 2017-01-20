@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.truemind.pensionnleisure.IntroActivity"
+    android:orientation="vertical"
+    android:background="@mipmap/intro_back"
+    android:weightSum="1">
+
+    <Space
+        android:layout_width="1px"
+        android:layout_height="0px"
+        android:layout_weight="0.840"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.0583"
+        android:weightSum="1">
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.0494"/>
+
+        <ImageButton
+            android:onClick="onClick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9012"
+            android:id="@+id/intro_btn1"
+            android:background="@drawable/intro_btn_event" />
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.0494"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="1px"
+        android:layout_height="0px"
+        android:layout_weight="0.0188"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.0583"
+        android:weightSum="1">
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.0494"/>
+
+        <ImageButton
+            android:onClick="onClick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9012"
+            android:id="@+id/intro_btn2"
+            android:background="@drawable/intro_btn_back" />
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.0494"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="1px"
+        android:layout_height="0px"
+        android:layout_weight="0.0246"/>
 
 </LinearLayout>

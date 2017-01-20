@@ -29,7 +29,6 @@ public class LeisureActivity  extends Activity {
     private void initListener() {
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-
         imageView.setVerticalScrollBarEnabled(true);
         imageView.setVerticalFadingEdgeEnabled(true);
 
