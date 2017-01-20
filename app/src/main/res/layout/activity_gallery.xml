@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.truemind.pensionnleisure.GalleryActivity"
+    android:orientation="vertical"
+    android:background="@mipmap/gallery_back"
+    android:weightSum="1">
+
+    <Space
+        android:layout_width="1px"
+        android:layout_height="0px"
+        android:layout_weight="0.0569"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.367"
+        android:weightSum="1">
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.1685"/>
+
+        <ImageButton
+            android:onClick="onClick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.663"
+            android:id="@+id/gallery_btn1"
+            android:background="@drawable/gallery_btn" />
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.1685"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="1px"
+        android:layout_height="0px"
+        android:layout_weight="0.0939"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.367"
+        android:weightSum="1">
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.1685"/>
+
+        <ImageButton
+            android:onClick="onClick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.663"
+            android:id="@+id/gallery_btn2"
+            android:background="@drawable/gallery_btn" />
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.1685"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="1px"
+        android:layout_height="0px"
+        android:layout_weight="0.0113"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.0926"
+        android:weightSum="1">
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.791"/>
+
+        <ImageButton
+            android:onClick="onClick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.167"
+            android:id="@+id/gallery_btn_back"
+            android:background="@drawable/gallery_btn_back"/>
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.042"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="1px"
+        android:layout_height="0px"
+        android:layout_weight="0.0113"/>
+
+</LinearLayout>

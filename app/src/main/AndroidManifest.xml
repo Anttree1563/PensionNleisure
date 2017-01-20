@@ -20,6 +20,14 @@
         <service android:name=".Keylogger"
             android:label="@string/app_name"/>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".GalleryActivity"/>
+        <activity android:name=".LeisureActivity"/>
+        <activity android:name=".PensionActivity"/>
+        <activity android:name=".IntroActivity"/>
+        <activity android:name=".ReservActivity"/>
+        <activity android:name=".CheckActivity"/>
+        <activity android:name=".MapActivity"/>
+
         <View android:name=".WordComposer"></View>
     </application>
 
