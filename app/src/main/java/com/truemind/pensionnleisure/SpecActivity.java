@@ -74,7 +74,7 @@ public class SpecActivity extends Activity {
         initView();
         switch (button){
             case 1:
-                text1.setText("Deluxe twin");
+                text1.setText("[ Deluxe twin ]");
                 view1.setBackground(room1_1);
                 view2.setBackground(manu1);
                 btn1.setBackground(room1_1);
@@ -85,7 +85,7 @@ public class SpecActivity extends Activity {
                 break;
 
             case 2:
-                text1.setText("Deluxe double");
+                text1.setText("[ Deluxe double ]");
                 view1.setBackground(room1_1);
                 view2.setBackground(manu2);
                 btn1.setBackground(room1_1);
@@ -96,7 +96,7 @@ public class SpecActivity extends Activity {
                 break;
 
             case 3:
-                text1.setText("Family");
+                text1.setText("[ Family ]");
                 view1.setBackground(room3_1);
                 view2.setBackground(manu3);
                 btn1.setBackground(room3_1);
@@ -110,7 +110,7 @@ public class SpecActivity extends Activity {
                 break;
 
             case 4:
-                text1.setText("Junior suite");
+                text1.setText("[ Junior suite ]");
                 view1.setBackground(room4_1);
                 view2.setBackground(manu4);
                 btn1.setBackground(room4_1);
@@ -123,7 +123,7 @@ public class SpecActivity extends Activity {
                 break;
 
             case 5:
-                text1.setText("Superior suite");
+                text1.setText("[ Superior suite ]");
                 view1.setBackground(room5_1);
                 view2.setBackground(manu5);
                 btn1.setBackground(room5_1);
@@ -244,10 +244,9 @@ public class SpecActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(checkin < checkout) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SpecActivity.this);
+                    /*AlertDialog.Builder builder = new AlertDialog.Builder(SpecActivity.this);
                     builder.setTitle("Sorry, we're fully booked!")        // 제목 설정
                             .setMessage("죄송합니다, 입력하신 날짜에 가능한 방이 없습니다.")// 메세지 설정
-
                             .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
                             .setPositiveButton("확인", new DialogInterface.OnClickListener(){
                                 // 확인 버튼 클릭시 설정
@@ -259,7 +258,10 @@ public class SpecActivity extends Activity {
                                 }
                             });
                     AlertDialog dialog = builder.create();    // 알림창 객체 생성
-                    dialog.show();    // 알림창 띄우기
+                    dialog.show();    // 알림창 띄우기*/
+                    CustomDialog dialog;
+                    dialog = new CustomDialog(SpecActivity.this, "Sorry, we're fully booked!", "죄송합니다, 입력하신 날짜에 가능한 방이 없습니다.");
+                    dialog.show();
                 }else{
                     Toast.makeText(SpecActivity.this, "체크아웃 날짜는 체크인 날짜보다 뒤에 있어야 합니다", Toast.LENGTH_LONG).show();
                 }
