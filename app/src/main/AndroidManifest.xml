@@ -25,6 +25,7 @@
         <activity android:name=".PensionActivity"/>
         <activity android:name=".IntroActivity"/>
         <activity android:name=".ReservActivity"/>
+        <activity android:name=".SpecActivity"/>
         <activity android:name=".CheckActivity"/>
         <activity android:name=".MapActivity"/>
 
