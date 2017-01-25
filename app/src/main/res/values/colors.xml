@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="candidate_normal">#000000</color>
+    <color name="candidate_recommended">#E35900</color>
+    <color name="candidate_other">#808080</color>
+    <color name="candidate_background">#ffffff</color>
+    <color name="key_back">#fafafa</color>
+    <color name="key_color">#000000</color>
+    <color name="keyboard_back">#babbbf</color>
 </resources>

