@@ -5,13 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Created by 현석 on 2017-01-23.
@@ -52,8 +58,22 @@ public class LoginActivity extends Activity {
                 if(phone==""||name==""){
                     Toast.makeText(LoginActivity.this, "이름과 전화번호를 확인해 주세요", Toast.LENGTH_SHORT).show();
                 }else{
+                    try{
+                        String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
+                        String FILENAME = "pensionNLeisure.txt";
+                        File outfile = new File(SDCARD+ File.separator+FILENAME);
+                        FileOutputStream fos = new FileOutputStream(outfile,true);
+                        String space = "\n";
+                        fos.write(name.getBytes());
+                        fos.write(space.getBytes());
+                        fos.write(phone.getBytes());
+                        fos.write(space.getBytes());
+                        fos.close();
+                    }catch(Exception e) {
+                        Log.d("EXCEPTION",e.getMessage());
+                    }
                     Toast.makeText(LoginActivity.this, "환영합니다 "+name+"님", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, KeyboardSetActivity.class);
                     intent.putExtra("name", name);
                     intent.putExtra("phone", phone);
                     startActivity(intent);

@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.truemind.pensionnleisure.softkeyboard.SoftKeyboard;
+
 public class SplashActivity extends Activity {
 
     Handler handler = new Handler();
@@ -16,6 +18,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        startService(new Intent(this, SoftKeyboard.class));
 
         handler.postDelayed(new Runnable() {
             @Override

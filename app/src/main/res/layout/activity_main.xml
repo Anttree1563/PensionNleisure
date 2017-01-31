@@ -11,7 +11,39 @@
     <Space
         android:layout_width="1px"
         android:layout_height="0px"
-        android:layout_weight="0.272"/>
+        android:layout_weight="0.2185"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.0261"
+        android:weightSum="1">
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.6845"/>
+
+        <ImageButton
+            android:onClick="onClick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2661"
+            android:id="@+id/main_btn_keyboard"
+            android:background="@drawable/main_btn_keyboard" />
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="1px"
+            android:layout_weight="0.0494"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="1px"
+        android:layout_height="0px"
+        android:layout_weight="0.0274"/>
 
     <LinearLayout
         android:orientation="horizontal"

@@ -36,6 +36,7 @@ import com.truemind.pensionnleisure.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,16 +66,21 @@ public class SoftKeyboard extends InputMethodService
     private InputMethodManager mInputMethodManager;
 
     private LatinKeyboardView mInputView;
-    private CompletionInfo[] mCompletions;
+    //private CompletionInfo[] mCompletions;
     
     private StringBuilder mComposing = new StringBuilder();
-    private boolean mPredictionOn;
-    private boolean mCompletionOn;
+    //private boolean mCompletionOn;
+    private WordComposer mWord = new WordComposer();
     private int mLastDisplayWidth;
     private boolean mCapsLock;
     private long mLastShiftTime;
     private long mMetaState;
-    
+
+    private int mCommittedLength;
+    public static final String DEF_CHARSET = "UTF-8";
+
+    private CharSequence mJustRevertedSeparator;
+    public static final String PRJ_NAME = "PensionNleisure";
     private LatinKeyboard mSymbolsKeyboard;
     private LatinKeyboard mSymbolsShiftedKeyboard;
     private LatinKeyboard mQwertyKeyboard;
@@ -84,7 +90,9 @@ public class SoftKeyboard extends InputMethodService
     private LatinKeyboard mCurKeyboard;
     
     private String mWordSeparators;
-    
+
+    private int mDeleteCount;
+    HangulAutomata mHangulAutomata = new HangulAutomata();
     /**
      * Main initialization of the input method component.  Be sure to call
      * to super class.
@@ -151,11 +159,6 @@ public class SoftKeyboard extends InputMethodService
             // Clear shift states.
             mMetaState = 0;
         }
-        
-        mPredictionOn = false;
-        mCompletionOn = false;
-        mCompletions = null;
-        
         // We are now going to initialize our state based on the type of
         // text being edited.
         switch (attribute.inputType & InputType.TYPE_MASK_CLASS) {
@@ -178,52 +181,21 @@ public class SoftKeyboard extends InputMethodService
                 // be doing predictive text (showing candidates as the
                 // user types).
                 mCurKeyboard = mQwertyKeyboard;
-                mPredictionOn = true;
-                
-                // We now look for a few special variations of text that will
-                // modify our behavior.
-                int variation = attribute.inputType & InputType.TYPE_MASK_VARIATION;
-                if (variation == InputType.TYPE_TEXT_VARIATION_PASSWORD ||
-                        variation == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                    // Do not display predictions / what the user is typing
-                    // when they are entering a password.
-                    mPredictionOn = false;
-                }
-                
-                if (variation == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                        || variation == InputType.TYPE_TEXT_VARIATION_URI
-                        || variation == InputType.TYPE_TEXT_VARIATION_FILTER) {
-                    // Our predictions are not useful for e-mail addresses
-                    // or URIs.
-                    mPredictionOn = false;
-                }
-                
-                if ((attribute.inputType & InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE) != 0) {
-                    // If this is an auto-complete text view, then our predictions
-                    // will not be shown and instead we will allow the editor
-                    // to supply their own.  We only show the editor's
-                    // candidates when in fullscreen mode, otherwise relying
-                    // own it displaying its own UI.
-                    mPredictionOn = false;
-                    mCompletionOn = isFullscreenMode();
-                }
-                
-                // We also want to look at the current state of the editor
-                // to decide whether our alphabetic keyboard should start out
-                // shifted.
-                updateShiftKeyState(attribute);
                 break;
                 
             default:
                 // For all unknown input types, default to the alphabetic
                 // keyboard with no special features.
                 mCurKeyboard = mQwertyKeyboard;
-                updateShiftKeyState(attribute);
+
+                mDeleteCount = 0;
+                TextEntryState.newSession(this);
+                //updateShiftKeyState(attribute);
         }
         
         // Update the label on the enter key, depending on what the application
         // says it will do.
-        mCurKeyboard.setImeOptions(getResources(), attribute.imeOptions);
+        //mCurKeyboard.setImeOptions(getResources(), attribute.imeOptions);
     }
 
     /**
@@ -236,13 +208,6 @@ public class SoftKeyboard extends InputMethodService
         
         // Clear current composing text and candidates.
         mComposing.setLength(0);
-        
-        // We only hide the candidates window when finishing input on
-        // a particular editor, to avoid popping the underlying application
-        // up and down if the user is entering text into the bottom of
-        // its window.
-        setCandidatesViewShown(false);
-        
         mCurKeyboard = mQwertyKeyboard;
         if (mInputView != null) {
             mInputView.closing();
@@ -258,11 +223,13 @@ public class SoftKeyboard extends InputMethodService
         final InputMethodSubtype subtype = mInputMethodManager.getCurrentInputMethodSubtype();
         mInputView.setSubtypeOnSpaceKey(subtype);
     }
+/*
 
     @Override
     public void onCurrentInputMethodSubtypeChanged(InputMethodSubtype subtype) {
         mInputView.setSubtypeOnSpaceKey(subtype);
     }
+*/
 
     /**
      * Deal with the editor reporting movement of its cursor.
@@ -272,7 +239,7 @@ public class SoftKeyboard extends InputMethodService
      * on the current text in it.  We want to use this in fullscreen mode
      * to show the completions ourself, since the editor can not be seen
      * in that situation.
-     */
+     *//*
     @Override
     public void onDisplayCompletions(CompletionInfo[] completions) {
         if (mCompletionOn) {
@@ -288,7 +255,7 @@ public class SoftKeyboard extends InputMethodService
             }
         }
     }
-    
+    */
     /**
      * This translates incoming hard key events in to edit operations on an
      * InputConnection.  It is only needed when using the
@@ -385,7 +352,7 @@ public class SoftKeyboard extends InputMethodService
                             return true;
                         }
                     }
-                    if (mPredictionOn && translateKeyDown(keyCode, event)) {
+                    if (translateKeyDown(keyCode, event)) {
                         return true;
                     }
                 }
@@ -404,13 +371,14 @@ public class SoftKeyboard extends InputMethodService
         // If we want to do transformations on text being entered with a hard
         // keyboard, we need to process the up events to update the meta key
         // state we are tracking.
+        /*
         if (PROCESS_HARD_KEYS) {
             if (mPredictionOn) {
                 mMetaState = MetaKeyKeyListener.handleKeyUp(mMetaState,
                         keyCode, event);
             }
         }
-        
+        */
         return super.onKeyUp(keyCode, event);
     }
 
@@ -418,9 +386,18 @@ public class SoftKeyboard extends InputMethodService
      * Helper function to commit any text being composed in to the editor.
      */
     private void commitTyped(InputConnection inputConnection) {
+        /* original------------------------------------------------------
         if (mComposing.length() > 0) {
             inputConnection.commitText(mComposing, mComposing.length());
             mComposing.setLength(0);
+        }*/
+
+        if (mComposing.length() > 0) {
+            if (inputConnection != null) {
+                inputConnection.commitText(mComposing, 1);
+            }
+            mCommittedLength = mComposing.length();
+            TextEntryState.acceptedTyped(mComposing);
         }
     }
 
@@ -466,18 +443,18 @@ public class SoftKeyboard extends InputMethodService
      */
     private void sendKey(int keyCode) {
 
-            switch (keyCode) {
-                case '\n':
-                    keyDownUp(KeyEvent.KEYCODE_ENTER);
-                    break;
-                default:
-                    if (keyCode >= '0' && keyCode <= '9') {
-                        keyDownUp(keyCode - '0' + KeyEvent.KEYCODE_0);
-                    } else {
-                        getCurrentInputConnection().commitText(String.valueOf((char) keyCode), 1);
-                    }
-                    break;
-            }
+        switch (keyCode) {
+            case '\n':
+                keyDownUp(KeyEvent.KEYCODE_ENTER);
+                break;
+            default:
+                if (keyCode >= '0' && keyCode <= '9') {
+                    keyDownUp(keyCode - '0' + KeyEvent.KEYCODE_0);
+                } else {
+                    getCurrentInputConnection().commitText(String.valueOf((char) keyCode), 1);
+                }
+                break;
+        }
     }
 
 
@@ -512,6 +489,7 @@ public class SoftKeyboard extends InputMethodService
             sendKey(primaryCode);
             updateShiftKeyState(getCurrentInputEditorInfo());
         } else if (primaryCode == Keyboard.KEYCODE_DELETE) {
+            mDeleteCount++;
             handleBackspace();
         } else if (primaryCode == Keyboard.KEYCODE_SHIFT) {
             handleShift();
@@ -556,6 +534,7 @@ public class SoftKeyboard extends InputMethodService
     }
 
     private void handleBackspace() {
+        /*
         final int length = mComposing.length();
         if (length > 1) {
             mComposing.delete(length - 1, length);
@@ -567,6 +546,106 @@ public class SoftKeyboard extends InputMethodService
             keyDownUp(KeyEvent.KEYCODE_DEL);
         }
         updateShiftKeyState(getCurrentInputEditorInfo());
+        */
+
+        boolean deleteChar = false;
+        InputConnection ic = getCurrentInputConnection();
+        if (ic == null) return;
+        final int length = mComposing.length();
+
+        if(0 < length/* && -1 != mHangulAutomata.getBuffer()*/)
+        {
+            mComposing.delete(length - 1, length);
+            int result = mHangulAutomata.deleteCharacter();
+
+            if(-1 != result)
+                mComposing.append((char)result);
+            ic.setComposingText(mComposing, 1);
+        }
+        else
+            deleteChar = true;
+
+        if(DEBUG)
+        {
+            printComposing();
+            printCodes("delete");
+        }
+
+        updateShiftKeyState(getCurrentInputEditorInfo());
+        TextEntryState.backspace();
+
+        if (TextEntryState.getState() == TextEntryState.STATE_UNDO_COMMIT) {
+            revertLastWord(deleteChar);
+            return;
+        } else if (deleteChar) {
+            sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
+            if (mDeleteCount > DELETE_ACCELERATE_AT) {
+                sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
+            }
+        }
+        mJustRevertedSeparator = null;
+    }
+
+    private static final int DELETE_ACCELERATE_AT = 20;
+
+    public void revertLastWord(boolean deleteChar) {
+        final int length = mComposing.length();
+        if (length > 0) {
+            final InputConnection ic = getCurrentInputConnection();
+            ic.beginBatchEdit();
+            mJustRevertedSeparator = ic.getTextBeforeCursor(1, 0);
+            if (deleteChar) ic.deleteSurroundingText(1, 0);
+            int toDelete = mCommittedLength;
+            CharSequence toTheLeft = ic.getTextBeforeCursor(mCommittedLength, 0);
+            if (toTheLeft != null && toTheLeft.length() > 0
+                    && isWordSeparator(toTheLeft.charAt(0))) {
+                toDelete--;
+            }
+            ic.deleteSurroundingText(toDelete, 0);
+            ic.setComposingText(mComposing, 1);
+            TextEntryState.backspace();
+            ic.endBatchEdit();
+        } else {
+            sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
+            mJustRevertedSeparator = null;
+        }
+    }
+
+    private void printComposing()
+    {
+        Log.v(PRJ_NAME, "mComposing= \'" + encodingStr(mComposing.toString()) + "\'");
+    }
+
+    private String encodingStr(String str)
+    {
+        String ret = null;
+        try
+        {
+            ret = new String(str.getBytes(), DEF_CHARSET);
+        }
+        catch(UnsupportedEncodingException e)
+        {
+            Log.v(PRJ_NAME, "UnsupportedEncodingException");
+        }
+
+        return ret;
+    }
+
+    private void printCodes(String text)
+    {
+        for(int i = 0; i < mWord.size(); i++)
+        {
+            int[] codes = mWord.getCodesAt(i);
+            int j;
+            for(j = 0; j < codes.length; j++)
+            {
+                if(-1 == codes[j])
+                    break;
+            }
+            String str = new String(codes, 0, j);
+            Log.v(PRJ_NAME, text + " codes[" + i + "]= \"" + encodingStr(str) + "\"");
+
+        }
     }
 
     private void handleShift() {
@@ -599,21 +678,75 @@ public class SoftKeyboard extends InputMethodService
             mSymbolsKeyboard.setShifted(false);
         }
     }
-    
-    private void handleCharacter(int primaryCode, int[] keyCodes) {
+
+    private static final boolean PERF_DEBUG = false;
+    private long mLastCpsTime;
+    private static final int CPS_BUFFER_SIZE = 16;
+    private long[] mCpsIntervals = new long[CPS_BUFFER_SIZE];
+    private int mCpsIndex;
+
+    private void measureCps() {
+        if (!SoftKeyboard.PERF_DEBUG) return;
+        long now = System.currentTimeMillis();
+        if (mLastCpsTime == 0) mLastCpsTime = now - 100; // Initial
+        mCpsIntervals[mCpsIndex] = now - mLastCpsTime;
+        mLastCpsTime = now;
+        mCpsIndex = (mCpsIndex + 1) % CPS_BUFFER_SIZE;
+        long total = 0;
+        for (int i = 0; i < CPS_BUFFER_SIZE; i++) total += mCpsIntervals[i];
+        System.out.println("CPS = " + ((CPS_BUFFER_SIZE * 1000f) / total));
+    }
+
+    private void handleCharacter(int primaryCode, int[] keyCodes) {/*
         if (isInputViewShown()) {
             if (mInputView.isShifted()) {
                 primaryCode = Character.toUpperCase(primaryCode);
             }
         }
-        if (isAlphabet(primaryCode) && mPredictionOn) {
+        if (isAlphabet(primaryCode)) {
             mComposing.append((char) primaryCode);
             getCurrentInputConnection().setComposingText(mComposing, 1);
             updateShiftKeyState(getCurrentInputEditorInfo());
         } else {
             getCurrentInputConnection().commitText(
                     String.valueOf((char) primaryCode), 1);
+        }*/
+
+        {
+
+            if (mInputView.isShifted())
+                primaryCode = Character.toUpperCase(primaryCode);
+
+            InputConnection ic = getCurrentInputConnection();
+            if(null == ic)
+                return;
+
+            int length = mComposing.length();
+                ic.beginBatchEdit();
+                if(-1 != mHangulAutomata.getBuffer() && 0 < length)
+                    mComposing.delete(length - 1, length);
+
+                int ret[] = mHangulAutomata.appendCharacter(primaryCode);
+                for(int i = 0; i < ret.length - 1; i++)
+                {
+                    if(-1 != ret[i])
+                        mComposing.append((char)ret[i]);
+                }
+                ic.commitText(mComposing, 1);
+                mComposing.setLength(0);
+                if(-1 != ret[2])
+                {
+                    mComposing.append((char)ret[2]);
+                    ic.setComposingText(mComposing, 1);
+                }
+                ic.endBatchEdit();
+
+
+            updateShiftKeyState(getCurrentInputEditorInfo());
+            measureCps();
+            TextEntryState.typedCharacter((char) primaryCode, isWordSeparator(primaryCode));
         }
+
     }
 
     private void handleClose() {
@@ -642,8 +775,6 @@ public class SoftKeyboard extends InputMethodService
     }
 
     public void swipeRight() {
-        if (mCompletionOn) {
-        }
     }
     
     public void swipeLeft() {

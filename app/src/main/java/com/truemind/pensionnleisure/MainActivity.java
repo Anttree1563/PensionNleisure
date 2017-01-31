@@ -13,7 +13,7 @@ import com.truemind.pensionnleisure.softkeyboard.SoftKeyboard;
 public class MainActivity extends Activity {
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-    ImageButton btn1, btn2, btn3, btn4, btn5;
+    ImageButton btn0, btn1, btn2, btn3, btn4, btn5;
     String name, phone;
     String namepref, phonepref;
 
@@ -21,7 +21,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startService(new Intent(this, SoftKeyboard.class));
         if(namepref!=""||phonepref!="") {
             getPreferences();
             name = namepref;
@@ -60,7 +59,15 @@ public class MainActivity extends Activity {
     }
 
     private void initListener() {
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
 
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MainActivity.this, KeyboardSetActivity.class);
+                startActivity(intent1);
+                finish();
+            }
+        });
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
 
@@ -112,6 +119,7 @@ public class MainActivity extends Activity {
     }
 
     private void initView() {
+        btn0 = (ImageButton) findViewById(R.id.main_btn_keyboard);
         btn1 = (ImageButton) findViewById(R.id.main_btn1);
         btn2 = (ImageButton) findViewById(R.id.main_btn2);
         btn3 = (ImageButton) findViewById(R.id.main_btn3);
