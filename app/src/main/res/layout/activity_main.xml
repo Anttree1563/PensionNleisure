@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.truemind.pensionnleisure.MainActivity"
     android:orientation="vertical"
-    android:background="@mipmap/main_back"
+    android:background="@mipmap/main_back2"
     android:weightSum="1">
 
     <Space

