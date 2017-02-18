@@ -502,7 +502,8 @@ public class HangulAutomata {
         	Log.v(SoftKeyboard.PRJ_NAME, "save result: " + "[" + encodingCode(mHangulCharBuffer[0]) + 
 				encodingCode(mHangulCharBuffer[1]) + encodingCode(mHangulCharBuffer[2]) + "]"  + 
 				", completed=\'" + encodingCode(completedChar) + "\'" + 
-				", working=\'" + encodingCode(mWorkingChar) + "\'");
+				", working=\'"
+                    + encodingCode(mWorkingChar) + "\'");
         }
 
         int[] ret = {-1, -1, -1};
@@ -511,6 +512,9 @@ public class HangulAutomata {
 
         return ret;
     }
+	public void clearBuffer(){
+
+	}
 
     private int[] saveUnknownCharacter(int state, int primaryCode)
     {
@@ -936,6 +940,7 @@ public class HangulAutomata {
     	
     	//Log.v("SoftKeyboard", "decode: " + "[" + encodingString(out) + "]");
     	return out;
+
     }
 
     public static int countCharacter(char c)

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,8 @@ import java.util.GregorianCalendar;
  * Created by 현석 on 2017-01-22.
  */
 public class SpecActivity extends Activity {
-    ImageView view1, view2;
+    LinearLayout spec_guide_layout, spec_view_layout;
+    ImageView view1, view2, view3;
     TextView text1, text2, text3;
     ImageButton btn1, btn2, btn3, btn4, btn5, btn6;
     Drawable room1_1, room1_2, room1_3, room1_4, room1_5;
@@ -72,6 +74,7 @@ public class SpecActivity extends Activity {
 
 
         initView();
+
         switch (button){
             case 1:
                 text1.setText("[ Deluxe twin ]");
@@ -267,7 +270,15 @@ public class SpecActivity extends Activity {
                 }
             }
         });
+        view3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view3.setVisibility(View.GONE);
+
+            }
+        });
     }
+
 
     private DatePickerDialog.OnDateSetListener dateSetListener2
         = new DatePickerDialog.OnDateSetListener() {
@@ -299,6 +310,8 @@ public class SpecActivity extends Activity {
 
 
     private void initView() {
+        spec_guide_layout = (LinearLayout)findViewById(R.id.spec_guide_layout);
+        spec_view_layout = (LinearLayout)findViewById(R.id.spec_view_layout);
         btn1 = (ImageButton) findViewById(R.id.imageButton1);
         btn2 = (ImageButton) findViewById(R.id.imageButton2);
         btn3 = (ImageButton) findViewById(R.id.imageButton3);
@@ -307,6 +320,7 @@ public class SpecActivity extends Activity {
         btn6 = (ImageButton) findViewById(R.id.spec_btn6);
         view1 = (ImageView) findViewById(R.id.imageView);
         view2 = (ImageView) findViewById(R.id.imageView2);
+        view3 = (ImageView) findViewById(R.id.imageView3);
         text1 = (TextView) findViewById(R.id.textView1);
         text2 = (TextView) findViewById(R.id.textView2);
         text3 = (TextView) findViewById(R.id.textView3);

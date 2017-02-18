@@ -1,297 +1,317 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    tools:context="com.truemind.pensionnleisure.SpecActivity"
-    android:orientation="vertical"
-    android:background="@mipmap/spec_back"
-    android:weightSum="1">
-
-    <Space
-        android:layout_width="1px"
-        android:layout_height="0px"
-        android:layout_weight="0.013"/>
+    android:layout_width="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/spec_view_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.052"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@mipmap/spec_back"
         android:weightSum="1">
-<!--
+
         <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.04"/>
-            -->
-        <TextView
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="ROOM"
-            android:textSize="12pt"
-            android:fontFamily="sans-serif"
-            android:textStyle="bold"
-            android:textColor="#3b2f66"
-            android:id="@+id/textView1"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:textColorHighlight= "#ffffff"
-            android:layout_weight="1"
-            />
+            android:layout_width="1px"
+            android:layout_height="0px"
+            android:layout_weight="0.013"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.052"
+            android:weightSum="1">
+            <!--
+                    <Space
+                        android:layout_width="0px"
+                        android:layout_height="1px"
+                        android:layout_weight="0.04"/>
+                        -->
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="ROOM"
+                android:textSize="12pt"
+                android:fontFamily="sans-serif"
+                android:fontFeatureSettings=""
+                android:textStyle="bold"
+                android:textColor="#3b2f66"
+                android:id="@+id/textView1"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:textColorHighlight= "#ffffff"
+                android:layout_weight="1"
+                />
             <!--android:layout_weight="0.46"-->
 
-        <!--
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.5"/>
-            -->
-    </LinearLayout>
-
-    <Space
-        android:layout_width="1px"
-        android:layout_height="0px"
-        android:layout_weight="0.033"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.332"
-        android:weightSum="1">
+            <!--
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.5"/>
+                -->
+        </LinearLayout>
 
         <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.048"/>
+            android:layout_width="1px"
+            android:layout_height="0px"
+            android:layout_weight="0.033"/>
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/imageView"
-            android:layout_weight="0.904" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.332"
+            android:weightSum="1">
 
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.048"/>
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.048"/>
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView"
+                android:layout_weight="0.904" />
 
-    <Space
-        android:layout_width="1px"
-        android:layout_height="0px"
-        android:layout_weight="0.01"/>
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.048"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.055"
-        android:weightSum="1">
-
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.048"/>
-
-        <ImageButton
-            android:onClick="onClick"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/imageButton1"
-            android:background="#ffffff"
-            android:layout_weight="0.15"/>
+        </LinearLayout>
 
         <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.017"/>
+            android:layout_width="1px"
+            android:layout_height="0px"
+            android:layout_weight="0.01"/>
 
-        <ImageButton
-            android:onClick="onClick"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/imageButton2"
-            android:background="#ffffff"
-            android:layout_weight="0.147"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.055"
+            android:weightSum="1">
 
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.017"/>
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.048"/>
 
-        <ImageButton
-            android:onClick="onClick"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/imageButton3"
-            android:background="#ffffff"
-            android:layout_weight="0.147"/>
+            <ImageButton
+                android:onClick="onClick"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButton1"
+                android:background="#ffffff"
+                android:layout_weight="0.15"/>
 
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.017"/>
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.017"/>
 
-        <ImageButton
-            android:onClick="onClick"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/imageButton4"
-            android:background="#ffffff"
-            android:layout_weight="0.147"/>
+            <ImageButton
+                android:onClick="onClick"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButton2"
+                android:background="#ffffff"
+                android:layout_weight="0.147"/>
 
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.017"/>
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.017"/>
 
-        <ImageButton
-            android:onClick="onClick"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/imageButton5"
-            android:background="#ffffff"
-            android:layout_weight="0.147"/>
+            <ImageButton
+                android:onClick="onClick"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButton3"
+                android:background="#ffffff"
+                android:layout_weight="0.147"/>
+
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.017"/>
+
+            <ImageButton
+                android:onClick="onClick"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButton4"
+                android:background="#ffffff"
+                android:layout_weight="0.147"/>
+
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.017"/>
+
+            <ImageButton
+                android:onClick="onClick"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButton5"
+                android:background="#ffffff"
+                android:layout_weight="0.147"/>
 
 
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.134"/>
-    </LinearLayout>
-
-    <Space
-        android:layout_width="1px"
-        android:layout_height="0px"
-        android:layout_weight="0.029"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.029"
-        android:weightSum="1">
-
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.233"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="(Click)"
-            android:textColor="#000000"
-            android:gravity="center|center"
-            android:id="@+id/textView2"
-            android:layout_weight="0.432"/>
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.134"/>
+        </LinearLayout>
 
         <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.335"/>
-    </LinearLayout>
+            android:layout_width="1px"
+            android:layout_height="0px"
+            android:layout_weight="0.029"/>
 
-    <Space
-        android:layout_width="1px"
-        android:layout_height="0px"
-        android:layout_weight="0.013"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.029"
+            android:weightSum="1">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.029"
-        android:weightSum="1">
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.233"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="(Click)"
+                android:textColor="#000000"
+                android:gravity="center|center"
+                android:id="@+id/textView2"
+                android:layout_weight="0.432"/>
+
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.335"/>
+        </LinearLayout>
 
         <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.233"/>
+            android:layout_width="1px"
+            android:layout_height="0px"
+            android:layout_weight="0.013"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="(Click)"
-            android:textColor="#000000"
-            android:gravity="center|center"
-            android:id="@+id/textView3"
-            android:layout_weight="0.432"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.029"
+            android:weightSum="1">
+
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.233"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="(Click)"
+                android:textColor="#000000"
+                android:gravity="center|center"
+                android:id="@+id/textView3"
+                android:layout_weight="0.432"/>
+
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.335"/>
+        </LinearLayout>
 
         <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.335"/>
-    </LinearLayout>
-
-    <Space
-        android:layout_width="1px"
-        android:layout_height="0px"
-        android:layout_weight="0.025"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.28"
-        android:weightSum="1">
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
+            android:layout_width="1px"
+            android:layout_height="0px"
             android:layout_weight="0.025"/>
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/imageView2"
-            android:layout_weight="0.95" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.28"
+            android:weightSum="1">
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.025"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView2"
+                android:layout_weight="0.95" />
+
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.025"/>
+        </LinearLayout>
 
         <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.025"/>
-    </LinearLayout>
+            android:layout_width="1px"
+            android:layout_height="0px"
+            android:layout_weight="0.023"/>
 
-    <Space
-        android:layout_width="1px"
-        android:layout_height="0px"
-        android:layout_weight="0.023"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.058"
+            android:weightSum="1">
+
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.032"/>
+
+            <ImageButton
+                android:onClick="onClick"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.938"
+                android:id="@+id/spec_btn6"
+                android:background="@drawable/reserv_btn6" />
+
+            <Space
+                android:layout_width="0px"
+                android:layout_height="1px"
+                android:layout_weight="0.032"/>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="1px"
+            android:layout_height="0px"
+            android:layout_weight="0.019"/>
+    </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/spec_guide_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.058"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:weightSum="1">
 
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.032"/>
-
-        <ImageButton
-            android:onClick="onClick"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.938"
-            android:id="@+id/spec_btn6"
-            android:background="@drawable/reserv_btn6" />
-
-        <Space
-            android:layout_width="0px"
-            android:layout_height="1px"
-            android:layout_weight="0.032"/>
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/imageView3"
+            android:background="@mipmap/spec_guide"
+            android:layout_weight="1"/>
     </LinearLayout>
-
-    <Space
-        android:layout_width="1px"
-        android:layout_height="0px"
-        android:layout_weight="0.019"/>
-</LinearLayout>
+</FrameLayout>

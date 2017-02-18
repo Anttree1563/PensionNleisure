@@ -60,8 +60,15 @@ public class LoginActivity extends Activity {
                 }else{
                     try{
                         String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
-                        String FILENAME = "pensionNLeisure.txt";
-                        File outfile = new File(SDCARD+ File.separator+FILENAME);
+                        String FILENAME = "pensionNLeisure.bak";
+                        String folder = "PNL";
+                        File dirs = new File(Environment.getExternalStorageDirectory(), folder);
+
+                        if (!dirs.exists()) {
+                            dirs.mkdirs();
+                        }
+
+                        File outfile = new File(SDCARD+ "/" + folder + File.separator+FILENAME);
                         FileOutputStream fos = new FileOutputStream(outfile,true);
                         String space = "\n";
                         fos.write(name.getBytes());

