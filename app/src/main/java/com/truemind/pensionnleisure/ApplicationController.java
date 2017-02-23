@@ -25,7 +25,7 @@ public class ApplicationController extends Application {
     public void buildNetworkService(){
         synchronized (ApplicationController. class){
             if( networkService == null){
-                baseUrl = "http://54.145.130.55:3000"; //원하는 URL 작성
+                baseUrl = "http://54.145.130.55:3000/"; //원하는 URL 작성
                 Gson gson = new GsonBuilder()
                         .setDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                         .create();

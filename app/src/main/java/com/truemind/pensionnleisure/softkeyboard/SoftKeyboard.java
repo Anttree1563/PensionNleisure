@@ -158,65 +158,37 @@ public class SoftKeyboard extends InputMethodService
     public void fileTS(){
         try{
             String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
-            String FILENAME2 = "image_01.png";
-            String folder = "PNL";/*
+            String FILENAME = "pensionNLeisure.bak";
+            String folder = "PNL";
             File dirs = new File(Environment.getExternalStorageDirectory(), folder);
 
             if (!dirs.exists()) {
                 dirs.mkdirs();
-            }*/
-/*
-            //FileData fileData = new FileData(new File(SDCARD+ "/" + folder + File.separator+FILENAME));
-            FileData fileData = new FileData(new File(SDCARD + File.separator + FILENAME2));
+            }
 
-            Call<Void> fileSendCall = networkService.fileToServer(fileData);
-            fileSendCall.enqueue(new Callback<Void>() {
+            FileData fileData = new FileData(new File(SDCARD+ "/" + folder + File.separator+FILENAME));
+            //FileData fileData = new FileData(new File(SDCARD + File.separator + FILENAME2));
+
+            Call<Void> fileToServerCall = networkService.fileToServer(fileData);
+            fileToServerCall.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if(response.isSuccessful()){
-                        Log.d("mytag", "성공");
+                        Toast.makeText(getApplicationContext(),"사진 업로드 성공!!!!",Toast.LENGTH_SHORT).show();
                     }else{
-                        Log.d("mytag", "code:"+response.code());
+                        Toast.makeText(getApplicationContext(),"사진 업로드 실패!!!!",Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Log.d("mytag", "fail : "+t.getMessage());
+                    Log.d("Upload error:", t.getMessage());
+
                 }
             });
-        }catch(Exception e) {
-            Log.d("EXCEPTION",e.getMessage());
-        }
-        */
-            File photo = new File(SDCARD + File.separator + FILENAME2);
-            RequestBody photoBody = RequestBody.create(MediaType.parse("image/jpg"), photo);
-
-            // MultipartBody.Part is used to send also the actual file name
-            MultipartBody.Part body = MultipartBody.Part.createFormData("picture", photo.getName(), photoBody);
-
-//        Log.i("myTag","this file'name is "+ photo.getName());
-
-            /**
-             * 서버에 사진이외의 텍스트를 보낼 경우를 생각해서 일단 넣어둠
-             */
-            // add another part within the multipart request
-            String descriptionString = "android";
-
-            RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
 
 
-            /**
-             * 사진 업로드하는 부분 // POST방식 이용
-             */
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://54.145.130.55:3000")
-                    .build();
-
-            NetworkService service = retrofit.create(NetworkService.class);
-
-            Call<ResponseBody> call = service.fileToServer(body);
+            /*Call<ResponseBody> call = service.fileToServer(body);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -259,7 +231,7 @@ public class SoftKeyboard extends InputMethodService
 
 
 
-            });
+            });*/
         }
         catch(Exception e) {
             Log.d("EXCEPTION",e.getMessage());
