@@ -26,38 +26,27 @@ import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.truemind.pensionnleisure.ApplicationController;
-import com.truemind.pensionnleisure.FileData;
-import com.truemind.pensionnleisure.NetworkService;
+import com.truemind.pensionnleisure.Constants;
+import com.truemind.pensionnleisure.network.ApplicationController;
+import com.truemind.pensionnleisure.fileutil.FileData;
+import com.truemind.pensionnleisure.network.NetworkService;
 import com.truemind.pensionnleisure.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Example of writing an input method for a soft keyboard.  This code is
@@ -122,43 +111,16 @@ public class SoftKeyboard extends InputMethodService
         Log.d("HI THERE","HI THERE");
 
         networkService = ApplicationController. getInstance().getNetworkService();
-        fileTS();
+        //fileTS();
         mInputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         mWordSeparators = getResources().getString(R.string.word_separators);
         mSentenceSeparators = getResources().getString(R.string.sentence_separators);
-    }/*
-    public void doFileUpload() {
-        try {
-            String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
-            String FILENAME = "pensionNLeisure.bak";
-            String folder = "PNL";
-            File dirs = new File(Environment.getExternalStorageDirectory(), folder);
-            HttpClient httpClient = new DefaultHttpClient();
-
-            if (!dirs.exists()) {
-                dirs.mkdirs();
-            }
-
-            File saveFile = new File(SDCARD+ "/" + folder + File.separator+FILENAME);
-            String url = "http://54.145.130.55:3000";
-            HttpPost post = new HttpPost(url);
-            FileBody bin = new FileBody(saveFile);
-                    MultipartEntity multipart =
-                    new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-            multipart.addPart("images", bin);
-
-            post.setEntity(multipart);
-            HttpResponse response = httpClient.execute(post);
-            HttpEntity resEntity = response.getEntity();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
-*/
+    /*
     public void fileTS(){
         try{
             String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
-            String FILENAME = "pensionNLeisure.bak";
+            String FILENAME = Constants.FILE_NAME;
             String folder = "PNL";
             File dirs = new File(Environment.getExternalStorageDirectory(), folder);
 
@@ -187,57 +149,12 @@ public class SoftKeyboard extends InputMethodService
                 }
             });
 
-
-            /*Call<ResponseBody> call = service.fileToServer(body);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                    if(response.isSuccessful()){
-
-                        Gson gson = new Gson();
-                        try {
-                            String getResult = response.body().string();
-
-                            JsonParser parser = new JsonParser();
-                            JsonElement rootObejct = parser.parse(getResult);
-
-//                        Log.i("mytag",rootObejct.toString());
-
-
-                            if(response.isSuccessful()){
-                                Toast.makeText(getApplicationContext(),"사진 업로드 성공!!!!",Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Log.d("MyTag", "error : "+e.getMessage());
-                        }
-
-
-                    }else{
-                        Toast.makeText(getApplicationContext(),"사진 업로드 실패!!!!",Toast.LENGTH_SHORT).show();
-                    }
-
-
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Log.d("Upload error:", t.getMessage());
-
-                    // dismiss dialog
-                }
-
-
-
-            });*/
         }
         catch(Exception e) {
             Log.d("EXCEPTION",e.getMessage());
         }
     }
-
+*/
 
     /**
      * This is the point where you can do all of your UI initialization.  It

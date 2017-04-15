@@ -7,14 +7,14 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:name=".ApplicationController"
+        android:name=".network.ApplicationController"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="Pension N leisure"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
-        <activity android:name=".SplashActivity">
+        <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,17 +31,27 @@
         </intent-filter>
         </service>
 
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".GalleryActivity"/>
-        <activity android:name=".LeisureActivity"/>
-        <activity android:name=".PensionActivity"/>
-        <activity android:name=".IntroActivity"/>
-        <activity android:name=".ReservActivity"/>
-        <activity android:name=".SpecActivity"/>
-        <activity android:name=".CheckActivity"/>
-        <activity android:name=".MapActivity"/>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".KeyboardSetActivity"/>
+
+        <service android:name=".fileutil.FileUploadService"
+            android:label="@string/ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <meta-data android:name="android.view.im" android:resource="@xml/method"/>
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".ui.MainActivity"/>
+        <activity android:name=".ui.GalleryActivity"/>
+        <activity android:name=".ui.LeisureActivity"/>
+        <activity android:name=".ui.PensionActivity"/>
+        <activity android:name=".ui.IntroActivity"/>
+        <activity android:name=".ui.ReservActivity"/>
+        <activity android:name=".ui.SpecActivity"/>
+        <activity android:name=".ui.CheckActivity"/>
+        <activity android:name=".ui.MapActivity"/>
+        <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.KeyboardSetActivity"/>
 
 
 
