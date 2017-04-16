@@ -1,3 +1,4 @@
+/*
 package com.truemind.pensionnleisure.network;
 
 import android.util.Log;
@@ -10,9 +11,17 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+*/
 /**
+ *
  * Created by 현석 on 2017-04-01.
- */
+ *
+ * @notice file uploading handles with NetworkService, ApplicationController, FileUpload
+ * using multipart.
+ *
+ * this class file "HttpFileUpload" is useless
+ *//*
+
 public class HttpFileUpload {
 
     String lineEnd = "\r\n";
@@ -86,4 +95,4 @@ public class HttpFileUpload {
         }
     }
 
-}
+}*/

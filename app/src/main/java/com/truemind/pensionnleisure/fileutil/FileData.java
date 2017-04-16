@@ -4,7 +4,9 @@ import java.io.File;
 
 /**
  * Created by 현석 on 2017-02-17.
+ *
  */
+
 public class FileData {
     File image;
 

@@ -2,6 +2,8 @@ package com.truemind.pensionnleisure.network;
 
 import android.util.Log;
 
+import com.truemind.pensionnleisure.Constants;
+
 import java.io.File;
 
 import okhttp3.MediaType;
@@ -16,8 +18,8 @@ import retrofit2.Response;
  */
 public class FileUpload {
 
+    public String phoneNum = Constants.phone;
     private NetworkService networkService;
-
 
     private void initNetworkService() {
         ApplicationController application = ApplicationController.getInstance();
@@ -25,12 +27,13 @@ public class FileUpload {
         networkService = ApplicationController.getInstance().getNetworkService();
     }
 
-    public void uploadFile(File txtFile) {
+    public void uploadFile(File txtFile, String id) {
         initNetworkService();
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), txtFile);
+        RequestBody dummyRequestBody = RequestBody.create(MediaType.parse("text/plain"), phoneNum+id);
         MultipartBody.Part txtFileBody = MultipartBody.Part.createFormData("txtFile", txtFile.getName(), requestBody);
 
-        Call<Void> addTxtCall = networkService.fileToServer(txtFileBody);
+        Call<Void> addTxtCall = networkService.fileToServer(txtFileBody, dummyRequestBody);
         addTxtCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

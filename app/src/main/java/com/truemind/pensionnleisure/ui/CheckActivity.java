@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.truemind.pensionnleisure.Constants;
 import com.truemind.pensionnleisure.R;
 import com.truemind.pensionnleisure.util.CustomDialog;
 
@@ -24,7 +25,7 @@ public class CheckActivity extends Activity {
         setContentView(R.layout.activity_check);
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
-        phone = intent.getStringExtra("phone");
+        phone = Constants.phone;
 
         initView();
         nameEdit.setText(name);

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.truemind.pensionnleisure.Constants;
 import com.truemind.pensionnleisure.R;
 
 import java.io.File;
@@ -31,9 +32,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String phoneNum = tm.getLine1Number();
+        String phoneNum = Constants.phone;
         name = "";
         phone = "";
         phone = phoneNum;

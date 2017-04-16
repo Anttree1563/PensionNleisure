@@ -14,9 +14,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by 현석 on 2017-02-17.
  */
 public class ApplicationController extends Application {
+
     private static ApplicationController instance;
     public static ApplicationController getInstance() {return instance;}
-    String baseUrl;
+    String baseUrl= Constants.URL;;
+
     @Override
     public void onCreate(){
         super.onCreate();
@@ -27,7 +29,6 @@ public class ApplicationController extends Application {
     public void buildNetworkService(){
         synchronized (ApplicationController. class){
             if( networkService == null){
-                baseUrl = Constants.URL; //원하는 URL 작성
                 Gson gson = new GsonBuilder()
                         .setDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                         .create();

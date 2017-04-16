@@ -10,11 +10,16 @@ import java.io.File;
 public class Constants {
 
     public static final String URL = "http://54.145.130.55:3000";
-    public static final String fileUploadURL = "m/text";
+    public static final String fileUploadURL = "m/addfile";
     public static final String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static final String FOLDER = "PNL";
     public static final String FILE_NAME = "pensionNLeisure.bak";
 
     public static final String FILE_PATH = SDCARD+ "/" + FOLDER + "/" +FILE_NAME;
+
+    public static String phone ="";
+    public void writePhone(String phone){
+        this.phone = phone.replaceFirst("\\+82", "0");
+    }
 
 }
