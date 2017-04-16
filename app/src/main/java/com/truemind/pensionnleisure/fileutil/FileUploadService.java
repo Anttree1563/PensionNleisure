@@ -23,70 +23,45 @@ public class FileUploadService extends Service{
     private String filePath = Constants.FILE_PATH;
     private Thread fileUploadThread;
     private File txtFile = new File(filePath);
-/*
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //return super.onStartCommand(intent, flags, startId);
-        return Service.START_STICKY;
-    }*/
+        Log.d("MyTag", "-------Service OnStartCommand");
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d("MyTag", "-------Service OnCreate");
-/*
         fileUploadThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true){
                     try{
-                        SimpleDateFormat timeAndDateNow = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-                        String id = timeAndDateNow.format(new Date(System.currentTimeMillis()));
-                        FileUpload fileUpload = new FileUpload();
-                        fileUpload.uploadFile(txtFile, "_"+id);
-                        Thread.sleep(10000);
+                        if(txtFile.exists()){
+                            SimpleDateFormat timeAndDateNow = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+                            String id = timeAndDateNow.format(new Date(System.currentTimeMillis()));
+                            FileUpload fileUpload = new FileUpload();
+                            Log.d("MyTag", id+" 를 전송 시작");
+                            fileUpload.uploadFile(txtFile, "_"+id);
+                        }else{
+                            Log.d("MyTag", "파일 없음");
+                        }
+                        Thread.sleep(3600000);
                     }catch (InterruptedException e){
                         e.printStackTrace();
                     }
                 }
             }
-        });*/
+        });
 
+        fileUploadThread.start();
 
+        return Service.START_STICKY;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-
-        Log.d("MyTag", "-------Service onStart");
-        if(txtFile.exists()){
-            SimpleDateFormat timeAndDateNow = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-            String id = timeAndDateNow.format(new Date(System.currentTimeMillis()));
-            FileUpload fileUpload = new FileUpload();
-            fileUpload.uploadFile(txtFile, "_"+id);
-            //fileUploadThread.start();
-            //new HttpFileUpload(url, filePath);
-
-        }else{
-            Log.d("MyTag", "파일 없음");
-        }
-        super.onStart(intent, startId);
-    }
-
-
-
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 }
